@@ -14,12 +14,11 @@ wire [Addr_width-1:0] Wr_point, Rd_point;
 wire Full_sig, And_out_Wr, Empty_sig, And_out_Rd;
 
 //------------instatiate our modules-------------//
-Binary_counter_Wr #(.Addr_width(Addr_width)) B_Wr (
+Binary_counter #(.Addr_width(Addr_width)) B_Wr (
     .clk(Wr_clk),
     .stop(Full_sig),
     .Enable(Wr_en),
     .rst(rst),
-    //.overflow(Wr_point[Addr_width]),
     .address(Wr_addr)
 );
 
@@ -35,8 +34,6 @@ AND2 U1 (
 );
 
 Full #(.Addr_width(Addr_width)) F1 (
-    //.Wr_clk(Wr_clk),
-    //.rst(rst),
     .Wr_point({Wr_addr[Addr_width],Wr_point}),
     .Synch_Rd_point(Synch_Rd_point),
     .Full_sig(Full_sig)
@@ -81,12 +78,11 @@ Empty #(.Addr_width(Addr_width)) E1 (
     .Empty_sig(Empty_sig)
 );
 
-Binary_counter_Rd #(.Addr_width(Addr_width)) B_Rd (
+Binary_counter #(.Addr_width(Addr_width)) B_Rd (
     .clk(Rd_clk),
     .stop(Empty_sig),
     .Enable(Rd_en),
     .rst(rst),
-    //.overflow(Rd_point[Addr_width]),
     .address(Rd_addr)
 );
 

@@ -1,7 +1,6 @@
 
 vlog ./AND2.v
-vlog ./Binary_counter_Rd.v
-vlog ./Binary_counter_Wr.v
+vlog ./Binary_counter.v
 vlog ./Binary2Gray.v
 vlog ./Empty.v
 vlog ./FIFO.v
