@@ -10,7 +10,7 @@ vlog ./Synchronizer.v
 vlog ./XOR2.v
 vlog ./FIFO_TB.v
 
-vsim work.FIFO_TB
+vsim -voptargs="+acc" work.FIFO_TB 
 add wave *
 add wave -position insertpoint  \
 sim:/FIFO_TB/DUT/Full_sig

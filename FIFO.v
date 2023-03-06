@@ -2,10 +2,10 @@ module FIFO
 #(parameter Addr_width = 5, 
             Data_width = 8)
 (
-    input wire Wr_en, Wr_clk,
-    input wire Rd_en, Rd_clk, rst,
-    input wire [Data_width-1:0] Wr_data,
-    output wire [Data_width-1:0] Rd_data
+    input wire Wr_enable, clk_write,
+    input wire Read_enable, clk_read, rst,
+    input wire [Data_width-1:0] data_in,
+    output wire [Data_width-1:0] data_out
 );
 
 //-------------internal wires--------------------//
@@ -15,9 +15,9 @@ wire Full_sig, And_out_Wr, Empty_sig, And_out_Rd;
 
 //------------instatiate our modules-------------//
 Binary_counter #(.Addr_width(Addr_width)) B_Wr (
-    .clk(Wr_clk),
+    .clk(clk_write),
     .stop(Full_sig),
-    .Enable(Wr_en),
+    .Enable(Wr_enable),
     .rst(rst),
     .address(Wr_addr)
 );
@@ -28,7 +28,7 @@ Binary2Gray #(.Addr_width(Addr_width)) B2G_Wr (
 );
 
 AND2 U1 (
-    .in1(Wr_en),
+    .in1(Wr_enable),
     .in2(Full_sig),
     .out(And_out_Wr)
 );
@@ -41,37 +41,37 @@ Full #(.Addr_width(Addr_width)) F1 (
 
 Synchronizer #(.Width(Addr_width)) Sync_wr (
     .in({Wr_addr[Addr_width],Wr_point}),
-    .clk(Rd_clk),
+    .clk(clk_read),
     .rst(rst),
     .syn_out(Synch_Wr_point)
 );
 
 Memory #(.Data_width(Data_width), .Addr_width(Addr_width)) Mem1 (
-    .Wr_data(Wr_data),
+    .Wr_data(data_in),
     .Wr_addr(Wr_addr[Addr_width-1:0]),
     .Rd_addr(Rd_addr[Addr_width-1:0]),
     .Wr_en(And_out_Wr),
     .Rd_en(And_out_Rd),
-    .clk(Wr_clk),
+    .clk(clk_write),
     .rst(rst),
-    .Rd_data(Rd_data)
+    .Rd_data(data_out)
 );
 
 AND2 U2 (
-    .in1(Rd_en),
+    .in1(Read_enable),
     .in2(Empty_sig),
     .out(And_out_Rd)
 );
 
 Synchronizer #(.Width(Addr_width)) Sync_rd (
     .in({Rd_addr[Addr_width],Rd_point}),
-    .clk(Wr_clk),
+    .clk(clk_write),
     .rst(rst),
     .syn_out(Synch_Rd_point)
 );
 
 Empty #(.Addr_width(Addr_width)) E1 (
-    //.Rd_clk(Rd_clk),
+    //.Rd_clk(clk_read),
     //.rst(rst),
     .Synch_Wr_point(Synch_Wr_point),
     .Rd_point({Rd_addr[Addr_width],Rd_point}),
@@ -79,9 +79,9 @@ Empty #(.Addr_width(Addr_width)) E1 (
 );
 
 Binary_counter #(.Addr_width(Addr_width)) B_Rd (
-    .clk(Rd_clk),
+    .clk(clk_read),
     .stop(Empty_sig),
-    .Enable(Rd_en),
+    .Enable(Read_enable),
     .rst(rst),
     .address(Rd_addr)
 );

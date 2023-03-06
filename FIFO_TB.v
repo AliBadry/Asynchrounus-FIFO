@@ -112,12 +112,12 @@ module FIFO_TB
     end
 
     FIFO #( .Addr_width(Addr_width), .Data_width(Data_width)) DUT (
-        .Wr_en(Wr_en_tb),
-        .Wr_clk(Wr_clk_tb),
-        .Rd_en(Rd_en_tb),
-        .Rd_clk(Rd_clk_tb),
+        .Wr_enable(Wr_en_tb),
+        .clk_write(Wr_clk_tb),
+        .Read_enable(Rd_en_tb),
+        .clk_read(Rd_clk_tb),
         .rst(rst_tb),
-        .Wr_data(Wr_data_tb),
-        .Rd_data(Rd_data_tb)
+        .data_in(Wr_data_tb),
+        .data_out(Rd_data_tb)
     );
 endmodule
