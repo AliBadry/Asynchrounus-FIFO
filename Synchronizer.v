@@ -1,7 +1,7 @@
 module Synchronizer
 #(parameter Width = 5)
  (
-    input wire [Width:0] in, 
+    input wire [Width:0] syn_in, 
     input wire clk, rst,
     output reg [Width:0] syn_out
 );
@@ -14,7 +14,7 @@ reg [Width:0] inter; //intermidiate signal between the 2 FF
         end
         else
         begin
-            inter <= in;
+            inter <= syn_in;
             syn_out <= inter;
         end
     end

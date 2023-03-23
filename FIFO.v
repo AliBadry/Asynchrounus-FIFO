@@ -28,9 +28,9 @@ Binary2Gray #(.Addr_width(Addr_width)) B2G_Wr (
 );
 
 AND2 U1 (
-    .in1(Wr_enable),
-    .in2(Full_sig),
-    .out(And_out_Wr)
+    .in1_and(Wr_enable),
+    .in2_and(Full_sig),
+    .out_and(And_out_Wr)
 );
 
 Full #(.Addr_width(Addr_width)) F1 (
@@ -40,7 +40,7 @@ Full #(.Addr_width(Addr_width)) F1 (
 );
 
 Synchronizer #(.Width(Addr_width)) Sync_wr (
-    .in({Wr_addr[Addr_width],Wr_point}),
+    .syn_in({Wr_addr[Addr_width],Wr_point}),
     .clk(clk_read),
     .rst(rst),
     .syn_out(Synch_Wr_point)
@@ -58,13 +58,13 @@ Memory #(.Data_width(Data_width), .Addr_width(Addr_width)) Mem1 (
 );
 
 AND2 U2 (
-    .in1(Read_enable),
-    .in2(Empty_sig),
-    .out(And_out_Rd)
+    .in1_and(Read_enable),
+    .in2_and(Empty_sig),
+    .out_and(And_out_Rd)
 );
 
 Synchronizer #(.Width(Addr_width)) Sync_rd (
-    .in({Rd_addr[Addr_width],Rd_point}),
+    .syn_in({Rd_addr[Addr_width],Rd_point}),
     .clk(clk_write),
     .rst(rst),
     .syn_out(Synch_Rd_point)

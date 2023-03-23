@@ -1,6 +1,6 @@
 module XOR2 (
-    input wire in1, in2,
-    output wire out
+    input wire xor_in1, xor_in2,
+    output wire xor_out
 );
-    assign out = in1^in2;
+    assign xor_out = xor_in1^xor_in2;
 endmodule
